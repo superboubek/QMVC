@@ -7,7 +7,6 @@ This C++ code allows to compute mean value coordinates for quad and triquad mesh
 ## Authors
 
 * [**Jean-Marc Thiery**](https://www.telecom-paristech.fr/~thiery/) 
-* [**Pooran Memari**](https://www.lix.polytechnique.edu/~memari/) 
 * [**Tamy Boubekeur**](https://www.telecom-paristech.fr/~boubek)
 
 See also the list of [contributors](https://github.com/superboubek/QMVC/contributors) who participated in this project.
