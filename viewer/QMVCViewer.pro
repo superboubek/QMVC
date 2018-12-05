@@ -1,4 +1,4 @@
-EXT_DIR = /home/boubek/lib/libQGLViewer-2.6.3 # YOU NEED TO SET YOUR EXT_DIR CORRECTLY, AND PUT libQGlViewer (ideally v2.6.1)
+EXT_DIR = /home/boubek/lib/libQGLViewer-2.6.3 # YOU NEED TO SET YOUR EXT_DIR CORRECTLY, AND PUT libQGlViewer (v2.6.1 or more recent)
 
 VIEWERSHARED_DIR = shared
 GEOMSHARED_DIR = ../coordinates/shared
