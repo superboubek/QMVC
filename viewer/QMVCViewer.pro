@@ -1,11 +1,10 @@
-EXT_DIR = <path-to-libQGLViewer># YOU NEED TO SET YOUR EXT_DIR CORRECTLY, AND PUT libQGlViewer (ideally v2.6.1)
-
+EXT_DIR = /home/boubek/lib/libQGLViewer-2.6.3 # YOU NEED TO SET YOUR EXT_DIR CORRECTLY, AND PUT libQGlViewer (ideally v2.6.1)
 
 VIEWERSHARED_DIR = shared
 GEOMSHARED_DIR = ../coordinates/shared
 
 TEMPLATE = app
-TARGET = cagemanip
+TARGET = QMVCViewer
 DEPENDPATH += .
 INCLUDEPATH += .
 INCLUDEPATH += $${VIEWERSHARED_DIR}
@@ -23,8 +22,8 @@ OBJECTS_DIR = ./tmp/obj
 
 #QGLViewer
 {
- INCLUDEPATH += $${EXT_DIR}/libQGLViewer-2.6.1
- LIBS +=    -L$${EXT_DIR}/libQGLViewer-2.6.1/QGLViewer \
+ INCLUDEPATH += $${EXT_DIR}
+ LIBS +=    -L$${EXT_DIR}/QGLViewer \
             -lQGLViewer
 }
 

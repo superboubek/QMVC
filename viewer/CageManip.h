@@ -275,7 +275,7 @@ public :
 
         coordinate_id_to_show = -1;
 
-        setWindowTitle(QString("Cage Manip. Press 'H' for help!"));
+        setWindowTitle(QString("QMVC Viewer. Press 'H' for help!"));
 
         m_video_lowAngleRevolutionDegrees = 10;
         m_video_degre_Start = 0;
@@ -293,7 +293,7 @@ public :
         QFormLayout * layout = new QFormLayout;
         controls->setLayout( layout );
         controls->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Tool);
-        controls->setWindowTitle( "CageDeform Controls" );
+        controls->setWindowTitle( "QMVC Controls" );
         controls->setFocusPolicy( Qt::ClickFocus );
 
         // Specify the actions :

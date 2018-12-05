@@ -9,7 +9,7 @@ Jean-Marc Thiery, Pooran Memari and Tamy Boubekeur
 ACM Transactions on Graphics - Proc. SIGGRAPH Asia 2018 
 
 This repository contains:
-* QMVC/coordinates: a set methods to compute popular space coordinates, including:
+* QMVC/coordinates: a set (header-only) methods to compute popular space coordinates, including:
 	* Green Coordinates (GC)
 	* Mean Value Coordinates (MVC)
 	* Spherical Mean Value Coordinates (SMVC)
@@ -29,17 +29,35 @@ Jean-Marc Thiery, Pooran Memari and Tamy Boubekeur
 
 Dry push of the paper's reference implementation. Future releases will be cleaner and easier to deploy. 
 
-## Building the viewer ##
+## Building ##
 
 Viewer's dependencies:
 - Qt5.5.1 or more recent
-- libQGLViewer-2.6.1
+- libQGLViewer-2.6.1 or more recent
+- GNU GSL
 
-Adapt the content of the file viewer/CageManip.pro to your setting (path to libGLViewer)
+Adapt the content of the file viewer/QMVCViewer.pro to your setting e.g., path to libGLViewer
 
-To be completed...
+This application has been tested successfully on Linux Ubuntu and MS Windows 10. 
 
--------------------------------------------------------------------------------------------
+To compile it on Linux:
+```
+$ cd <path-to-QMVC>/viewer
+$ qmake 
+$ make
+```
+
+## Running ##
+
+On Linux:
+```
+$ cd <path-to-QMVC>/viewer
+$ ./QMVCViewer 
+```
+
+CTRL+Double-left-click opens the controls to load the mesh, the cage, bind them and deform them. 
+
+## Enabling specific coordinates ##
 
 At the beginning of CageManipInterface.h
 you will see the following lines:
@@ -49,9 +67,9 @@ you will see the following lines:
 #define ALLOW_SMVC
 #define ALLOW_GC
 
-simply comment the corresponding lines if you do not want to compute the coordinates.
+Simply comment the corresponding lines if you do not want to compute the coordinates.
 
--------------------------------------------------------------------------------------------
+## QMVC computation usage ##
 
 See and example of computation of QMVC in viewer/CageManipInterface.h, in the function: computeQMVCCoordinates()
 
