@@ -29,7 +29,7 @@
 #define GLUTILITYMETHODS_H
 
 
-
+#include <GL/glew.h>
 #include <QGLViewer/qglviewer.h>
 
 #include "BasicColors.h"

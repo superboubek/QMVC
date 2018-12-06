@@ -28,6 +28,7 @@
 #ifndef SimpleManipulator_H
 #define SimpleManipulator_H
 
+#include <GL/glew.h>
 
 #include <vector>
 #include <map>

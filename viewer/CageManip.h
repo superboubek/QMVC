@@ -25,8 +25,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#ifndef BOXMODELING_H
-#define BOXMODELING_H
+#ifndef CAGEMANIP_H
+#define CAGEMANIP_H
 
 #include <vector>
 #include <queue>
@@ -50,11 +50,9 @@
 #include "qt/Manipulator.h"
 #include "gl/TextureHandler.h"
 
-
-
 #define GL_GLEXT_PROTOTYPES
+#include <GL/glew.h>
 #include <gl/openglincludeQtComp.h>
-#include <GL/glext.h>
 #include <QOpenGLFunctions_4_3_Core>
 #include <QOpenGLFunctions>
 #include <QGLViewer/qglviewer.h>
@@ -69,9 +67,7 @@
 #include <QColorDialog>
 #include <QInputDialog>
 #include <QFileDialog>
-
-
-
+#include <QLabel>
 
 #include <ctime>
 #include <ratio>
@@ -84,7 +80,7 @@ struct AnimationTimer{
     bool playAnimation;
     double animationPeriodInMicroSeconds;
     double uAnimation;
-    std::chrono::system_clock::time_point timerPrevious;
+    std::chrono::time_point<std::chrono::high_resolution_clock> timerPrevious;
     bool loopAnimation;
 
     AnimationTimer() {
@@ -150,11 +146,6 @@ static constexpr GLenum faceTarget[6] = {
     GL_TEXTURE_CUBE_MAP_NEGATIVE_Y_EXT
 };
 
-
-
-
-
-
 class CMViewer : public QGLViewer , public QOpenGLFunctions_4_3_Core
 {
     Q_OBJECT
@@ -198,6 +189,7 @@ class CMViewer : public QGLViewer , public QOpenGLFunctions_4_3_Core
 
 public :
 
+    inline QWidget * getControlWidget () { return controls; }
 
     //--------------------------------
     // Environnement Map Settings.
@@ -283,6 +275,9 @@ public :
         animationTimer.setAnimationLengthInMilliSeconds(10000);
 
         envMappingMode = false;
+
+        //
+        construct_controls();
     }
 
 
@@ -297,22 +292,24 @@ public :
         controls->setFocusPolicy( Qt::ClickFocus );
 
         // Specify the actions :
-        DetailedAction * open_mesh = new DetailedAction( QIcon("./icons/open.png") , "Open Mesh" , "Open Mesh" , this , this , SLOT(open_mesh()) );
-        DetailedAction * open_cage = new DetailedAction( QIcon("./icons/cage.png") , "Open binding Cage" , "Open binding Cage" , this , this , SLOT(open_cage()) );
+        DetailedAction * open_mesh = new DetailedAction( QIcon("./icons/open.svg") , "Open Mesh" , "Open Mesh" , this , this , SLOT(open_mesh()) );
+        DetailedAction * open_cage = new DetailedAction( QIcon("./icons/open-cage.svg") , "Open binding Cage" , "Open binding Cage" , this , this , SLOT(open_cage()) );
 //        DetailedAction * computeMEC = new DetailedAction( QIcon("./icons/work.png") , "Clamp and compute MEC" , "Clamp and compute MEC" , this , this , SLOT(computeMEC()) );
-        DetailedAction * open_deformed_cage = new DetailedAction( QIcon("./icons/open.png") , "Open deformed Cage" , "Open deformed Cage" , this , this , SLOT(open_deformed_cage()) );
-        DetailedAction * saveDeformedModel = new DetailedAction( QIcon("./icons/save.png") , "Save model" , "Save model" , this , this , SLOT(saveDeformedModel()) );
-        DetailedAction * saveDeformedCage = new DetailedAction( QIcon("./icons/save.png") , "Save cage" , "Save cage" , this , this , SLOT(saveDeformedCage()) );
-        DetailedAction * help = new DetailedAction( QIcon("./icons/help.png") , "HELP" , "HELP" , this , this , SLOT(help()) );
+        DetailedAction * open_deformed_cage = new DetailedAction( QIcon("./icons/open-deformed-cage.svg") , "Open deformed Cage" , "Open deformed Cage" , this , this , SLOT(open_deformed_cage()) );
+        DetailedAction * saveDeformedModel = new DetailedAction( QIcon("./icons/save.svg") , "Save model" , "Save model" , this , this , SLOT(saveDeformedModel()) );
+        DetailedAction * saveDeformedCage = new DetailedAction( QIcon("./icons/save-cage.svg") , "Save cage" , "Save cage" , this , this , SLOT(saveDeformedCage()) );
+        DetailedAction * help = new DetailedAction( QIcon("./icons/help.svg") , "HELP" , "HELP" , this , this , SLOT(help()) );
 
-        DetailedAction * saveCamera = new DetailedAction( QIcon("./icons/camera.png") , "Save camera" , "Save camera" , this , this , SLOT(saveCamera()) );
-        DetailedAction * openCamera = new DetailedAction( QIcon("./icons/open_camera.png") , "Open camera" , "Open camera" , this , this , SLOT(openCamera()) );
-        DetailedAction * saveSnapShotPlusPlus = new DetailedAction( QIcon("./icons/save_snapshot.png") , "Save snapshot" , "Save snapshot" , this , this , SLOT(saveSnapShotPlusPlus()) );
+        DetailedAction * saveCamera = new DetailedAction( QIcon("./icons/save-camera.svg") , "Save camera" , "Save camera" , this , this , SLOT(saveCamera()) );
+        DetailedAction * openCamera = new DetailedAction( QIcon("./icons/open-camera.svg") , "Open camera" , "Open camera" , this , this , SLOT(openCamera()) );
+        DetailedAction * saveSnapShotPlusPlus = new DetailedAction( QIcon("./icons/save-snapshot.svg") , "Save snapshot" , "Save snapshot" , this , this , SLOT(saveSnapShotPlusPlus()) );
+
+        DetailedAction * quit = new DetailedAction( QIcon("./icons/quit.svg") , "Quit" , "Quit" , this , qApp, SLOT (closeAllWindows()));
 
 
         selectionToolCombo = new QComboBox;
-        selectionToolCombo->addItem(QIcon("./icons/RectangleSelection.png"),"",QVariant(0));
-        selectionToolCombo->addItem(QIcon("./icons/PickFace.png"),"",QVariant(1));
+        selectionToolCombo->addItem(QIcon("./icons/select-rect.svg"),"",QVariant(0));
+        selectionToolCombo->addItem(QIcon("./icons/select-face.svg"),"",QVariant(1));
         selectionToolCombo->setCurrentIndex(0);
         connect( selectionToolCombo , SIGNAL(currentIndexChanged(int)) , this , SLOT(selectionToolChanged(int)) );
         nbSelectionTools = 2;
@@ -355,25 +352,39 @@ public :
 
         // Add them :
         QToolBar *toolBar = new QToolBar;
-        toolBar->addAction( open_mesh );
-        toolBar->addAction( open_cage );
+        toolBar->addAction (open_mesh);
+        toolBar->addAction (open_cage);
 //        toolBar->addAction( computeMEC );
-        toolBar->addAction( open_deformed_cage );
-        toolBar->addAction( saveDeformedModel );
-        toolBar->addAction( saveDeformedCage );
-        toolBar->addAction( help );
-        toolBar->addWidget( selectionToolCombo );
-        toolBar->addAction( saveCamera );
-        toolBar->addAction( openCamera );
-        toolBar->addAction( saveSnapShotPlusPlus );
-
-
+        toolBar->addAction (open_deformed_cage);
+        toolBar->addAction (saveDeformedModel);
+        toolBar->addAction (saveDeformedCage);
+        toolBar->addSeparator ();
+        toolBar->addAction (openCamera);
+        toolBar->addAction (saveCamera);
+        toolBar->addAction (saveSnapShotPlusPlus);
+        toolBar->addSeparator ();
+        toolBar->addWidget (new QLabel (tr (" Selection: "), this));
+        toolBar->addWidget (selectionToolCombo);
+        toolBar->addSeparator ();
+        toolBar->addWidget (new QLabel (tr (" Coordinates: "), this));
+        toolBar->addWidget (updateMethod);
+        toolBar->addWidget (new QLabel (tr (" Vertex update: "), this));
+        toolBar->addWidget (updateMode);
+        toolBar->addWidget (new QLabel (tr (" Normal update: "), this));
+        toolBar->addWidget (normalupdateMode);
+        toolBar->addSeparator ();
+        toolBar->addAction (help);
+        toolBar->addSeparator ();
+        toolBar->addAction (quit);
+        toolBar->setIconSize(QSize(75, 75));
         layout->addRow( toolBar );
-        QHBoxLayout * updatesBoxes = new QHBoxLayout;
+        /*QHBoxLayout * updatesBoxes = new QHBoxLayout;
         updatesBoxes->addWidget(updateMethod);
         updatesBoxes->addWidget(updateMode);
         updatesBoxes->addWidget(normalupdateMode);
         layout->addRow( updatesBoxes );
+        */
+        //controls->show ();
     }
 
 
@@ -589,9 +600,6 @@ public :
         initEnvMap ();
 
         //
-        construct_controls();
-
-        //
         setSceneCenter( qglviewer::Vec( 0 , 0 , 0 ) );
         setSceneRadius( 10.f );
         showEntireScene();
@@ -600,50 +608,38 @@ public :
 
     QString helpString() const
     {
-        QString text("<h2>M y V i e w e r</h2>");
+        QString text("<h2>QMVC Viewer</h2>");
         text += "<p>";
-        text += "This application is a demo application for cage-based deformations. </br> <b>Green Coordinates*</b> and <b>Mean Value Coordinates**</b> have been implemented. No GPU acceleration has been done.";
+        text += "This application is Reference implementation of the research paper:<br>";
+        text += "  <b>Mean value coordinates for quad cages in 3D</b><br>";
+        text += "  <i>Jean-Marc Thiery, Pooran Memari and Tamy Boubekeur</i><br>";
+        text += "  ACM Transactions on Graphics - Proc. SIGGRAPH Asia 2018<br>";
+        text += "  <a href=\"https://www.telecom-paristech.fr/~boubek/papers/QMVC<br>\" Go to the project page</a><br>";
+        text += "<br>";
         text += "<h3>Basics</h3>";
         text += "<p>";
         text += "<ul>";
-        text += "<li>H   :   make this help appear</li>";
-        text += "<li>Ctrl + mouse left button double click   :   make Controls appear</li>";
-        text += "<li>Ctrl + mouse right button double click   :   choose background color</li>";
+        text += "<li>H :   make this help appear</li>";
+        text += "<li>Ctrl + mouse right button double click :   choose background color</li>";
         text += "</ul>";
         text += "<ul>";
-        text += "<li>Shift + mouse left    :    select cage vertices</li>";
-        text += "<li>Shift + Ctrl + mouse left    :    unselect cage vertices</li>";
-        text += "<li>Shift + mouse right click    :    manipulate the selected vertices</li>";
+        text += "<li>Shift + mouse left: select cage vertices</li>";
+        text += "<li>Shift + Ctrl + mouse left: unselect cage vertices</li>";
+        text += "<li>Shift + mouse right click: manipulate the selected vertices</li>";
         text += "</ul>";
         text += "<h3>User guide</h3>";
         text += "<p>";
-        text += "Open the Controls Panel with : 'Ctrl' + mouse left double click";
+        text += "<b>FIRST</b> open a mesh, <b>THEN</b> open a cage. OFF files are supported.";
         text += "</p>";
         text += "<p>";
-        text += "<b>FIRST</b> open a model, <b>THEN</b> open a cage model. OFF files are supported.";
+        text += "When you load a cage, there will be a latence time due to the computation of the cage coordinates.";
         text += "</p>";
         text += "<p>";
-        text += "When you load a cage model, there will be a latence time due to the calculation of the cage coordinates.";
-        text += "</p>";
-        text += "<p>";
-        text += "To deform the model, use the 'Rectangle' selection tool to select cage vertices, by using the mouse while keeping 'Shift' pressed (discussed before).";
+        text += "To deform the mesh, use the 'Rectangle' selection tool to select cage vertices, by using the mouse while keeping 'Shift' pressed (discussed before).";
         text += "To disable the manipulation tool, right click on it.";
-        text += "</p>";
-        text += "<h3>Biblio</h3>";
-        text += "<p>";
-        text += "(*) : LIPMAN, Y., LEVIN, D., AND COHEN-OR, D. 2008. Green coordinates. In ACM SIGGRAPH 2008 papers, ACM, 1-10.";
-        text += "</p>";
-        text += "<p>";
-        text += "(**) : JU, T., SCHAEFER, S., AND WARREN, J. 2005. Mean value coordinates for closed triangular meshes. In ACM SIGGRAPH 2005 papers, ACM, 561-566.";
         text += "</p>";
         return text;
     }
-
-
-
-
-
-
 
     void keyPressEvent( QKeyEvent * event )
     {
@@ -985,4 +981,4 @@ public slots:
 
 
 
-#endif // BOXMODELING_H
+#endif // CAGEMANIP_H

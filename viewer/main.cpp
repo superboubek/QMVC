@@ -28,13 +28,8 @@
 
 #include "CageManip.h"
 #include <QApplication>
-
-
-
-
-
-
-
+#include <QMainWindow>
+#include <QDockWidget>
 
 double angle( point3d const & a1 , point3d const & a2 ) {
     return atan2( point3d::cross(a1,a2).norm() , point3d::dot(a1,a2) );
@@ -73,29 +68,24 @@ void testBilinearQuantities() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
 int main( int argc , char** argv )
 {
     QApplication app( argc , argv );
 
-  //  testBilinearQuantities();
-
-
+    // testBilinearQuantities();
+    QMainWindow * mainWindow = new QMainWindow;
     CMViewer * viewer = new CMViewer;
-    //    viewer->setMinimumWidth (1920);
-    //    viewer->setMinimumHeight (1080);
-    viewer->show();
+    viewer->setMinimumWidth (1920);
+    viewer->setMinimumHeight (1080);
+    mainWindow->setCentralWidget (viewer);
+    auto * controlDockWidget = new QDockWidget (/*tr ("Informations"),*/ mainWindow);
+    controlDockWidget->setWidget (viewer->getControlWidget ());
+    mainWindow->addDockWidget (Qt::TopDockWidgetArea, controlDockWidget);
+    controlDockWidget->setAllowedAreas (Qt::TopDockWidgetArea);
+    controlDockWidget->setAllowedAreas (Qt::BottomDockWidgetArea);
+    controlDockWidget->setFeatures (QDockWidget::NoDockWidgetFeatures);
 
+    mainWindow->show();
 
     return app.exec();
 }
