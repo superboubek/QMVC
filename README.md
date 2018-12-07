@@ -5,16 +5,19 @@
 Reference implementation of the research paper: [**Mean value coordinates for quad cages in 3D**](https://www.telecom-paristech.fr/~boubek/papers/QMVC), *Jean-Marc Thiery, Pooran Memari and Tamy Boubekeur*, ACM Transactions on Graphics - Proc. SIGGRAPH Asia 2018 
 
 This repository contains:
-* QMVC/coordinates: a set (header-only) methods to compute popular space coordinates, including:
-	* Green Coordinates (GC)
-	* Mean Value Coordinates (MVC)
-	* Spherical Mean Value Coordinates (SMVC)
-	* maximum Entropy coordinates (MEC) 
-	* our Quad Mean Value Coordinates (QMVC)
-* QMVC/viewer: an interactive 3D viewer allowing to:
+* **QMVC/coordinates**, a set (header-only) methods to compute popular space coordinates, including
+	* Green Coordinates (GC),
+	* Mean Value Coordinates (MVC),
+	* Spherical Mean Value Coordinates (SMVC),
+	* maximum Entropy coordinates (MEC),
+	* our Quad Mean Value Coordinates (QMVC),
+* **QMVC/viewer**, an interactive 3D viewer allowing to
 	* compute the projection of a mesh within the space coordinates of a cage
 	* deform the the mesh using the cage
-
+* **QMVC/data**, a data set of 3D models (OBJ format) with, for each model
+	* the high-poly input mesh 
+	* a coarse binding cage 
+	* a deformation of this cage. 
 
 Copyright(C) 2018
 Jean-Marc Thiery, Pooran Memari and Tamy Boubekeur
