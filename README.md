@@ -1,4 +1,4 @@
-# QMVC #
+# QMVC - Quad Mean Value Coordinates #
 
 ## Overview ##
 
@@ -34,6 +34,7 @@ Viewer's dependencies:
 - Qt5.5.1 or more recent
 - libQGLViewer-2.6.1 or more recent
 - GNU GSL
+- GLEW 2.0 or more recent
 
 Adapt the content of the file viewer/QMVCViewer.pro to your setting e.g., path to libGLViewer
 
