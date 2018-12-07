@@ -291,13 +291,12 @@ public :
         controls->setWindowTitle( "QMVC Controls" );
         controls->setFocusPolicy( Qt::ClickFocus );
 
-        // Specify the actions :
         DetailedAction * open_mesh = new DetailedAction( QIcon("./icons/open.svg") , "Open Mesh" , "Open Mesh" , this , this , SLOT(open_mesh()) );
-        DetailedAction * open_cage = new DetailedAction( QIcon("./icons/open-cage.svg") , "Open binding Cage" , "Open binding Cage" , this , this , SLOT(open_cage()) );
-//        DetailedAction * computeMEC = new DetailedAction( QIcon("./icons/work.png") , "Clamp and compute MEC" , "Clamp and compute MEC" , this , this , SLOT(computeMEC()) );
-        DetailedAction * open_deformed_cage = new DetailedAction( QIcon("./icons/open-deformed-cage.svg") , "Open deformed Cage" , "Open deformed Cage" , this , this , SLOT(open_deformed_cage()) );
-        DetailedAction * saveDeformedModel = new DetailedAction( QIcon("./icons/save.svg") , "Save model" , "Save model" , this , this , SLOT(saveDeformedModel()) );
-        DetailedAction * saveDeformedCage = new DetailedAction( QIcon("./icons/save-cage.svg") , "Save cage" , "Save cage" , this , this , SLOT(saveDeformedCage()) );
+        DetailedAction * open_cage = new DetailedAction( QIcon("./icons/open-cage.svg") , "Open Binding Cage" , "Open Binding Cage" , this , this , SLOT(open_cage()) );
+        // DetailedAction * computeMEC = new DetailedAction( QIcon("./icons/work.png") , "Clamp and compute MEC" , "Clamp and compute MEC" , this , this , SLOT(computeMEC()) );
+        DetailedAction * open_deformed_cage = new DetailedAction( QIcon("./icons/open-deformed-cage.svg") , "Open Deformed Cage" , "Open Deformed Cage" , this , this , SLOT(open_deformed_cage()) );
+        DetailedAction * saveDeformedModel = new DetailedAction( QIcon("./icons/save.svg") , "Save mesh" , "Save Mesh" , this , this , SLOT(saveDeformedModel()) );
+        DetailedAction * saveDeformedCage = new DetailedAction( QIcon("./icons/save-cage.svg") , "Save Cage" , "Save Cage" , this , this , SLOT(saveDeformedCage()) );
         DetailedAction * help = new DetailedAction( QIcon("./icons/help.svg") , "HELP" , "HELP" , this , this , SLOT(help()) );
 
         DetailedAction * saveCamera = new DetailedAction( QIcon("./icons/save-camera.svg") , "Save camera" , "Save camera" , this , this , SLOT(saveCamera()) );
@@ -538,8 +537,8 @@ public :
     void adjustCamera( point3d const & bb , point3d const & BB )
     {
         point3d const & center = ( bb + BB )/2.f;
-        setSceneCenter( qglviewer::Vec( center[0] , center[1] , center[2] ) );
-        setSceneRadius( 1.5f * ( BB - bb ).norm() );
+        setSceneCenter (qglviewer::Vec( center[0] , center[1] , center[2]));
+        setSceneRadius ((BB - bb ).norm()/2.f);
         showEntireScene();
     }
 
@@ -629,7 +628,7 @@ public :
         text += "</ul>";
         text += "<h3>User guide</h3>";
         text += "<p>";
-        text += "<b>FIRST</b> open a mesh, <b>THEN</b> open a cage. OFF files are supported.";
+        text += "<b>FIRST</b> open a mesh, <b>THEN</b> open a cage. OBJ and OFF files are supported.";
         text += "</p>";
         text += "<p>";
         text += "When you load a cage, there will be a latence time due to the computation of the cage coordinates.";
@@ -808,14 +807,17 @@ public slots:
     void open_mesh()
     {
         point3d bb , BB;
-        QString fileName = QFileDialog::getOpenFileName(NULL,"","");
+        QString fileName = QFileDialog::getOpenFileName(this,
+                                                        tr ("Choose a mesh to load"),
+                                                        "",
+                                                        "3D Surface Mesh Formats (*.obj *.off)");
         if ( !fileName.isNull() ) {                 // got a file name
             if(fileName.endsWith(QString(".off"))) {
-                BasicConvertor::OFF2OBJ(fileName.toStdString() , (fileName + QString(".obj")).toStdString());
+                //BasicConvertor::OFF2OBJ(fileName.toStdString() , (fileName + QString(".obj")).toStdString());
                 cm_interface.open_OFF_mesh(fileName.toStdString() , bb , BB);
             }
             else if(fileName.endsWith(QString(".obj"))) {
-                BasicConvertor::OBJ2OFF(fileName.toStdString() , (fileName + QString(".off")).toStdString());
+                //BasicConvertor::OBJ2OFF(fileName.toStdString() , (fileName + QString(".off")).toStdString());
                 cm_interface.open_OBJ_mesh(fileName.toStdString() , bb , BB);
             }
             adjustCamera( bb , BB );
@@ -828,7 +830,10 @@ public slots:
 
     void saveDeformedModel()
     {
-        QString fileName = QFileDialog::getSaveFileName(NULL,"","");
+        QString fileName = QFileDialog::getSaveFileName(this,
+                                                        tr ("Choose a filename to save the deformed mesh"),
+                                                        "",
+                                                        "3D Surface Mesh Formats (*.obj *.off)");
         if ( !fileName.isNull() ) {                 // got a file name
             cm_interface.saveDeformedModel(fileName.toStdString());
         }
@@ -836,7 +841,10 @@ public slots:
 
     void saveDeformedCage()
     {
-        QString fileName = QFileDialog::getSaveFileName(NULL,"","");
+        QString fileName = QFileDialog::getSaveFileName(this,
+                                                        tr ("Choose a filename to save the deformed cage"),
+                                                        "",
+                                                        "3D Surface Mesh Formats (*.obj *.off)");
         if ( !fileName.isNull() ) {                 // got a file name
             cm_interface.saveDeformedCage(fileName.toStdString());
         }
@@ -844,20 +852,20 @@ public slots:
 
 
     void openCamera(){
-        QString fileName = QFileDialog::getOpenFileName(NULL,"","*.cam");
+        QString fileName = QFileDialog::getOpenFileName(this,"","*.cam");
         if ( !fileName.isNull() ) {                 // got a file name
             openCameraFromFile(fileName);
         }
     }
     void saveCamera(){
-        QString fileName = QFileDialog::getSaveFileName(NULL,"","*.cam");
+        QString fileName = QFileDialog::getSaveFileName(this,"","*.cam");
         if ( !fileName.isNull() ) {                 // got a file name
             saveCameraInFile(fileName);
         }
     }
 
     void saveSnapShotPlusPlus(){
-        QString fileName = QFileDialog::getSaveFileName(NULL,"*.png","");
+        QString fileName = QFileDialog::getSaveFileName(this,"*.png","");
         if ( !fileName.isNull() ) {                 // got a file name
             setSnapshotFormat("PNG");
             setSnapshotQuality(100);
@@ -869,11 +877,14 @@ public slots:
 
     void open_cage()
     {
-        QString fileName = QFileDialog::getOpenFileName(NULL,"","");
+        QString fileName = QFileDialog::getOpenFileName(this,
+                                                        tr ("Choose a binding cage open"),
+                                                        "",
+                                                        "3D Surface Mesh Formats (*.obj *.off)");
         if ( !fileName.isNull() ) {                 // got a file name
             if(fileName.endsWith(QString(".off"))) {
                 cm_interface.open_OFF_cage(fileName.toStdString());
-                BasicConvertor::OFF2OBJ(fileName.toStdString() , fileName.toStdString() + ".obj");
+                //BasicConvertor::OFF2OBJ(fileName.toStdString() , fileName.toStdString() + ".obj");
             }
             else if(fileName.endsWith(QString(".obj"))) {
                 cm_interface.open_OBJ_cage(fileName.toStdString());
@@ -884,7 +895,10 @@ public slots:
     }
     void open_deformed_cage()
     {
-        QString fileName = QFileDialog::getOpenFileName(NULL,"","");
+        QString fileName = QFileDialog::getOpenFileName(this,
+                                                        tr ("Choose a deformed cage open"),
+                                                        "",
+                                                        "3D Surface Mesh Formats (*.obj *.off)");
         if ( !fileName.isNull() ) {                 // got a file name
             if(fileName.endsWith(QString(".off"))) {
                 std::vector< point3d > newVerts;

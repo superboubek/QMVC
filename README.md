@@ -57,6 +57,10 @@ $ ./QMVCViewer
 
 CTRL+Double-left-click opens the controls to load the mesh, the cage, bind them and deform them. 
 
+## Data set ##
+
+A set of example models, taken from the paper, is provided in the data direction. See [data/README.md](data/README.md) for details. 
+
 ## Enabling specific coordinates ##
 
 At the beginning of CageManipInterface.h
@@ -67,7 +71,7 @@ you will see the following lines:
 #define ALLOW_SMVC
 #define ALLOW_GC
 
-Simply comment the corresponding lines if you do not want to compute the coordinates.
+Simply comment the corresponding lines if you do not want to compute the coordinates. By defaults, MVC, QMVC and GC are computed.
 
 ## QMVC computation usage ##
 
