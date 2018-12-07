@@ -5,8 +5,7 @@
 Reference implementation of the research paper:
 
 [Mean value coordinates for quad cages in 3D](https://www.telecom-paristech.fr/~boubek/papers/QMVC)
-Jean-Marc Thiery, Pooran Memari and Tamy Boubekeur 
-ACM Transactions on Graphics - Proc. SIGGRAPH Asia 2018 
+```Jean-Marc Thiery, Pooran Memari and Tamy Boubekeur```, ACM Transactions on Graphics - Proc. SIGGRAPH Asia 2018 
 
 This repository contains:
 * QMVC/coordinates: a set (header-only) methods to compute popular space coordinates, including:
