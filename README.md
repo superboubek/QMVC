@@ -1,5 +1,7 @@
 # QMVC - Quad Mean Value Coordinates #
 
+![](viewer/images/qmvc-snapshot.png)
+
 ## Overview ##
 
 Reference implementation of the research paper: [**Mean value coordinates for quad cages in 3D**](https://www.telecom-paristech.fr/~boubek/papers/QMVC), *Jean-Marc Thiery, Pooran Memari and Tamy Boubekeur*, ACM Transactions on Graphics - Proc. SIGGRAPH Asia 2018 
