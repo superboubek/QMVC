@@ -84,7 +84,7 @@ int main( int argc , char** argv )
     controlDockWidget->setAllowedAreas (Qt::TopDockWidgetArea);
     controlDockWidget->setAllowedAreas (Qt::BottomDockWidgetArea);
     controlDockWidget->setFeatures (QDockWidget::NoDockWidgetFeatures);
-
+    mainWindow->setWindowTitle ("QMVC - Mean Value Coordinates for Quad Cages in 3D");
     mainWindow->show();
 
     return app.exec();

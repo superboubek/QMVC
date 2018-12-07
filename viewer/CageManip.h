@@ -291,19 +291,19 @@ public :
         controls->setWindowTitle( "QMVC Controls" );
         controls->setFocusPolicy( Qt::ClickFocus );
 
-        DetailedAction * open_mesh = new DetailedAction( QIcon("./icons/open.svg") , "Open Mesh" , "Open Mesh" , this , this , SLOT(open_mesh()) );
-        DetailedAction * open_cage = new DetailedAction( QIcon("./icons/open-cage.svg") , "Open Binding Cage" , "Open Binding Cage" , this , this , SLOT(open_cage()) );
+        DetailedAction * open_mesh = new DetailedAction( QIcon("./icons/open.png") , "Open Mesh" , "Open Mesh" , this , this , SLOT(open_mesh()) );
+        DetailedAction * open_cage = new DetailedAction( QIcon("./icons/open-cage.png") , "Open Binding Cage" , "Open Binding Cage" , this , this , SLOT(open_cage()) );
         // DetailedAction * computeMEC = new DetailedAction( QIcon("./icons/work.png") , "Clamp and compute MEC" , "Clamp and compute MEC" , this , this , SLOT(computeMEC()) );
-        DetailedAction * open_deformed_cage = new DetailedAction( QIcon("./icons/open-deformed-cage.svg") , "Open Deformed Cage" , "Open Deformed Cage" , this , this , SLOT(open_deformed_cage()) );
-        DetailedAction * saveDeformedModel = new DetailedAction( QIcon("./icons/save.svg") , "Save mesh" , "Save Mesh" , this , this , SLOT(saveDeformedModel()) );
-        DetailedAction * saveDeformedCage = new DetailedAction( QIcon("./icons/save-cage.svg") , "Save Cage" , "Save Cage" , this , this , SLOT(saveDeformedCage()) );
-        DetailedAction * help = new DetailedAction( QIcon("./icons/help.svg") , "HELP" , "HELP" , this , this , SLOT(help()) );
+        DetailedAction * open_deformed_cage = new DetailedAction( QIcon("./icons/open-deformed-cage.png") , "Open Deformed Cage" , "Open Deformed Cage" , this , this , SLOT(open_deformed_cage()) );
+        DetailedAction * saveDeformedModel = new DetailedAction( QIcon("./icons/save.png") , "Save mesh" , "Save Mesh" , this , this , SLOT(saveDeformedModel()) );
+        DetailedAction * saveDeformedCage = new DetailedAction( QIcon("./icons/save-cage.png") , "Save Cage" , "Save Cage" , this , this , SLOT(saveDeformedCage()) );
+        DetailedAction * help = new DetailedAction( QIcon("./icons/help.png") , "HELP" , "HELP" , this , this , SLOT(help()) );
 
-        DetailedAction * saveCamera = new DetailedAction( QIcon("./icons/save-camera.svg") , "Save camera" , "Save camera" , this , this , SLOT(saveCamera()) );
-        DetailedAction * openCamera = new DetailedAction( QIcon("./icons/open-camera.svg") , "Open camera" , "Open camera" , this , this , SLOT(openCamera()) );
-        DetailedAction * saveSnapShotPlusPlus = new DetailedAction( QIcon("./icons/save-snapshot.svg") , "Save snapshot" , "Save snapshot" , this , this , SLOT(saveSnapShotPlusPlus()) );
+        DetailedAction * saveCamera = new DetailedAction( QIcon("./icons/save-camera.png") , "Save camera" , "Save camera" , this , this , SLOT(saveCamera()) );
+        DetailedAction * openCamera = new DetailedAction( QIcon("./icons/open-camera.png") , "Open camera" , "Open camera" , this , this , SLOT(openCamera()) );
+        DetailedAction * saveSnapShotPlusPlus = new DetailedAction( QIcon("./icons/save-snapshot.png") , "Save snapshot" , "Save snapshot" , this , this , SLOT(saveSnapShotPlusPlus()) );
 
-        DetailedAction * quit = new DetailedAction( QIcon("./icons/quit.svg") , "Quit" , "Quit" , this , qApp, SLOT (closeAllWindows()));
+        DetailedAction * quit = new DetailedAction( QIcon("./icons/quit.png") , "Quit" , "Quit" , this , qApp, SLOT (closeAllWindows()));
 
 
         selectionToolCombo = new QComboBox;
