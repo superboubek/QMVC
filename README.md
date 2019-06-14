@@ -90,7 +90,7 @@ See also the list of [contributors](https://github.com/superboubek/QMVC/contribu
 ## Citation
 
 Please cite the following paper in case you are using this code:
->**Mean value coordinates for quad cages in 3D** *Jean-Marc theiry, Pooran Memari and Tamy Boubekeur.* ACM Transactions on Graphics (Proc. SIGGRAPh Asia 2018), art. 29, 2018
+>**Mean value coordinates for quad cages in 3D** *Jean-Marc Thiery, Pooran Memari and Tamy Boubekeur.* ACM Transactions on Graphics (Proc. SIGGRAPh Asia 2018), art. 29, 2018
 
 ## License
 
