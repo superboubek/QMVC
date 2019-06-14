@@ -147,7 +147,7 @@ public:
         glLoadIdentity();
 
         if( this->selectionMode_ == ADD )
-            glColor4f(0.2, 0.2, 0.8f , 0.3f);
+            glColor4f(0.2, 0.8, 0.2f , 0.3f);
         if( this->selectionMode_ == REMOVE )
             glColor4f(0.8, 0.2, 0.2f , 0.3f);
 

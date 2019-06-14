@@ -294,13 +294,13 @@ public :
         controls->setWindowTitle( "QMVC Controls" );
         controls->setFocusPolicy( Qt::ClickFocus );
 
-        DetailedAction * open_mesh = new DetailedAction( QIcon(":/icons/open") , "Open Mesh" , "Open Mesh" , this , this , SLOT(open_mesh()) );
-        DetailedAction * open_cage = new DetailedAction( QIcon(":/icons/open-cage") , "Open Binding Cage" , "Open Binding Cage" , this , this , SLOT(open_cage()) );
+        DetailedAction * open_mesh = new DetailedAction( QIcon(":/icons/open") , "Open mesh" , "Open mesh" , this , this , SLOT(open_mesh()) );
+        DetailedAction * open_cage = new DetailedAction( QIcon(":/icons/open-cage") , "Open binding cage" , "Open binding cage" , this , this , SLOT(open_cage()) );
         // DetailedAction * computeMEC = new DetailedAction( QIcon("./icons/work.png") , "Clamp and compute MEC" , "Clamp and compute MEC" , this , this , SLOT(computeMEC()) );
-        DetailedAction * open_deformed_cage = new DetailedAction( QIcon(":/icons/open-deformed-cage") , "Open Deformed Cage" , "Open Deformed Cage" , this , this , SLOT(open_deformed_cage()) );
-        DetailedAction * saveDeformedModel = new DetailedAction( QIcon(":/icons/save") , "Save mesh" , "Save Mesh" , this , this , SLOT(saveDeformedModel()) );
-        DetailedAction * saveDeformedCage = new DetailedAction( QIcon(":/icons/save-cage") , "Save Cage" , "Save Cage" , this , this , SLOT(saveDeformedCage()) );
-        DetailedAction * help = new DetailedAction( QIcon(":/icons/help") , "HELP" , "HELP" , this , this , SLOT(help()) );
+        DetailedAction * open_deformed_cage = new DetailedAction( QIcon(":/icons/open-deformed-cage") , "Open deformed cage" , "Open deformed cage" , this , this , SLOT(open_deformed_cage()) );
+        DetailedAction * saveDeformedModel = new DetailedAction( QIcon(":/icons/save") , "Save mesh" , "Save mesh" , this , this , SLOT(saveDeformedModel()) );
+        DetailedAction * saveDeformedCage = new DetailedAction( QIcon(":/icons/save-cage") , "Save cage" , "Save cage" , this , this , SLOT(saveDeformedCage()) );
+        DetailedAction * help = new DetailedAction( QIcon(":/icons/help") , "Help" , "Help" , this , this , SLOT(help()) );
 
         DetailedAction * saveCamera = new DetailedAction( QIcon(":/icons/save-camera") , "Save camera" , "Save camera" , this , this , SLOT(saveCamera()) );
         DetailedAction * openCamera = new DetailedAction( QIcon(":/icons/open-camera") , "Open camera" , "Open camera" , this , this , SLOT(openCamera()) );
@@ -308,13 +308,15 @@ public :
 
         DetailedAction * quit = new DetailedAction( QIcon(":/icons/quit") , "Quit" , "Quit" , this , qApp, SLOT (closeAllWindows()));
 
-
+        /*
         selectionToolCombo = new QComboBox;
-        selectionToolCombo->addItem(QIcon(":/icons/select-rect"),"",QVariant(0));
-        selectionToolCombo->addItem(QIcon(":/icons/select-face"),"",QVariant(1));
+        selectionToolCombo->addItem (QIcon(":/icons/select-rect"),"",QVariant(0));
+        selectionToolCombo->addItem (QIcon(":/icons/select-face"),"",QVariant(1));
         selectionToolCombo->setCurrentIndex(0);
-        connect( selectionToolCombo , SIGNAL(currentIndexChanged(int)) , this , SLOT(selectionToolChanged(int)) );
+        connect (selectionToolCombo, SIGNAL(currentIndexChanged(int)) , this , SLOT(selectionToolChanged(int)) );
+        */
         nbSelectionTools = 2;
+
 
         QComboBox *updateMethod = new QComboBox;
 #ifdef ALLOW_TRI_MVC
@@ -341,7 +343,7 @@ public :
         updateMode->addItem(tr("RealTime"));
         updateMode->setCurrentIndex(1);
         setMode( updateMode->currentIndex() );
-        updateMode->setToolTip(QString("vertex update mode"));
+        updateMode->setToolTip(QString("Vertex update mode"));
         connect( updateMode , SIGNAL(currentIndexChanged(int)) , this , SLOT(modeChanged(int)) );
         QComboBox *normalupdateMode = new QComboBox;
         normalupdateMode->addItem(tr("None"));
@@ -349,7 +351,7 @@ public :
         normalupdateMode->addItem(tr("RealTime"));
         normalupdateMode->setCurrentIndex(2);
         normalupdateModeChanged( normalupdateMode->currentIndex() );
-        normalupdateMode->setToolTip(QString("vertex normals update mode"));
+        normalupdateMode->setToolTip(QString("Normals update mode"));
         connect( normalupdateMode , SIGNAL(currentIndexChanged(int)) , this , SLOT(normalupdateModeChanged(int)) );
 
         // Add them :
@@ -365,9 +367,11 @@ public :
         toolBar->addAction (saveCamera);
         toolBar->addAction (saveSnapShotPlusPlus);
         toolBar->addSeparator ();
+        /*
         toolBar->addWidget (new QLabel (tr (" Selection: "), this));
         toolBar->addWidget (selectionToolCombo);
         toolBar->addSeparator ();
+        */
         toolBar->addWidget (new QLabel (tr (" Coordinates: "), this));
         toolBar->addWidget (updateMethod);
         toolBar->addWidget (new QLabel (tr (" Vertex update: "), this));
