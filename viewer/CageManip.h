@@ -68,6 +68,9 @@
 #include <QInputDialog>
 #include <QFileDialog>
 #include <QLabel>
+#include <QFile>
+#include <QTextStream>
+
 
 #include <ctime>
 #include <ratio>
@@ -219,10 +222,10 @@ public :
 #endif
 
 
-    static void loadCubeMapFace (const std::string & sideFilename,
-                                 const std::string & topDownFilename) {
-        QImage * sideImage = new QImage (QString (sideFilename.c_str ()));
-        QImage * topDownImage = new QImage (QString (topDownFilename.c_str ()));
+    static void loadCubeMapFace (const QString & sideFilename,
+                                 const QString & topDownFilename) {
+        QImage * sideImage = new QImage (sideFilename);
+        QImage * topDownImage = new QImage (topDownFilename);
         for (unsigned int i = 0; i < 4; i++)
             gluBuild2DMipmaps (faceTarget[i], 4,
                                sideImage->width (), sideImage->height (),
@@ -237,7 +240,7 @@ public :
         int cubeMapMode = GL_REFLECTION_MAP_EXT;
         int cubeMapWrap = GL_REPEAT;
         std::string dirPath = std::string (qPrintable (QCoreApplication::applicationDirPath ()));
-        loadCubeMapFace (dirPath + "/images/cm_lines.png", dirPath + "/images/cm_grid.png");
+        loadCubeMapFace (":/images/cm-lines", ":/images/cm-grid");
         glTexParameteri (GL_TEXTURE_CUBE_MAP_EXT, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri (GL_TEXTURE_CUBE_MAP_EXT, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glEnable(GL_TEXTURE_CUBE_MAP_EXT);
@@ -291,24 +294,24 @@ public :
         controls->setWindowTitle( "QMVC Controls" );
         controls->setFocusPolicy( Qt::ClickFocus );
 
-        DetailedAction * open_mesh = new DetailedAction( QIcon("./icons/open.png") , "Open Mesh" , "Open Mesh" , this , this , SLOT(open_mesh()) );
-        DetailedAction * open_cage = new DetailedAction( QIcon("./icons/open-cage.png") , "Open Binding Cage" , "Open Binding Cage" , this , this , SLOT(open_cage()) );
+        DetailedAction * open_mesh = new DetailedAction( QIcon(":/icons/open") , "Open Mesh" , "Open Mesh" , this , this , SLOT(open_mesh()) );
+        DetailedAction * open_cage = new DetailedAction( QIcon(":/icons/open-cage") , "Open Binding Cage" , "Open Binding Cage" , this , this , SLOT(open_cage()) );
         // DetailedAction * computeMEC = new DetailedAction( QIcon("./icons/work.png") , "Clamp and compute MEC" , "Clamp and compute MEC" , this , this , SLOT(computeMEC()) );
-        DetailedAction * open_deformed_cage = new DetailedAction( QIcon("./icons/open-deformed-cage.png") , "Open Deformed Cage" , "Open Deformed Cage" , this , this , SLOT(open_deformed_cage()) );
-        DetailedAction * saveDeformedModel = new DetailedAction( QIcon("./icons/save.png") , "Save mesh" , "Save Mesh" , this , this , SLOT(saveDeformedModel()) );
-        DetailedAction * saveDeformedCage = new DetailedAction( QIcon("./icons/save-cage.png") , "Save Cage" , "Save Cage" , this , this , SLOT(saveDeformedCage()) );
-        DetailedAction * help = new DetailedAction( QIcon("./icons/help.png") , "HELP" , "HELP" , this , this , SLOT(help()) );
+        DetailedAction * open_deformed_cage = new DetailedAction( QIcon(":/icons/open-deformed-cage") , "Open Deformed Cage" , "Open Deformed Cage" , this , this , SLOT(open_deformed_cage()) );
+        DetailedAction * saveDeformedModel = new DetailedAction( QIcon(":/icons/save") , "Save mesh" , "Save Mesh" , this , this , SLOT(saveDeformedModel()) );
+        DetailedAction * saveDeformedCage = new DetailedAction( QIcon(":/icons/save-cage") , "Save Cage" , "Save Cage" , this , this , SLOT(saveDeformedCage()) );
+        DetailedAction * help = new DetailedAction( QIcon(":/icons/help") , "HELP" , "HELP" , this , this , SLOT(help()) );
 
-        DetailedAction * saveCamera = new DetailedAction( QIcon("./icons/save-camera.png") , "Save camera" , "Save camera" , this , this , SLOT(saveCamera()) );
-        DetailedAction * openCamera = new DetailedAction( QIcon("./icons/open-camera.png") , "Open camera" , "Open camera" , this , this , SLOT(openCamera()) );
-        DetailedAction * saveSnapShotPlusPlus = new DetailedAction( QIcon("./icons/save-snapshot.png") , "Save snapshot" , "Save snapshot" , this , this , SLOT(saveSnapShotPlusPlus()) );
+        DetailedAction * saveCamera = new DetailedAction( QIcon(":/icons/save-camera") , "Save camera" , "Save camera" , this , this , SLOT(saveCamera()) );
+        DetailedAction * openCamera = new DetailedAction( QIcon(":/icons/open-camera") , "Open camera" , "Open camera" , this , this , SLOT(openCamera()) );
+        DetailedAction * saveSnapShotPlusPlus = new DetailedAction( QIcon(":/icons/save-snapshot") , "Save snapshot" , "Save snapshot" , this , this , SLOT(saveSnapShotPlusPlus()) );
 
-        DetailedAction * quit = new DetailedAction( QIcon("./icons/quit.png") , "Quit" , "Quit" , this , qApp, SLOT (closeAllWindows()));
+        DetailedAction * quit = new DetailedAction( QIcon(":/icons/quit") , "Quit" , "Quit" , this , qApp, SLOT (closeAllWindows()));
 
 
         selectionToolCombo = new QComboBox;
-        selectionToolCombo->addItem(QIcon("./icons/select-rect.svg"),"",QVariant(0));
-        selectionToolCombo->addItem(QIcon("./icons/select-face.svg"),"",QVariant(1));
+        selectionToolCombo->addItem(QIcon(":/icons/select-rect"),"",QVariant(0));
+        selectionToolCombo->addItem(QIcon(":/icons/select-face"),"",QVariant(1));
         selectionToolCombo->setCurrentIndex(0);
         connect( selectionToolCombo , SIGNAL(currentIndexChanged(int)) , this , SLOT(selectionToolChanged(int)) );
         nbSelectionTools = 2;
@@ -607,37 +610,10 @@ public :
 
     QString helpString() const
     {
-        QString text("<h2>QMVC Viewer</h2>");
-        text += "<p>";
-        text += "This application is Reference implementation of the research paper:<br>";
-        text += "  <b>Mean value coordinates for quad cages in 3D</b><br>";
-        text += "  <i>Jean-Marc Thiery, Pooran Memari and Tamy Boubekeur</i><br>";
-        text += "  ACM Transactions on Graphics - Proc. SIGGRAPH Asia 2018<br>";
-        text += "  <a href=\"https://www.telecom-paristech.fr/~boubek/papers/QMVC<br>\" Go to the project page</a><br>";
-        text += "<br>";
-        text += "<h3>Basics</h3>";
-        text += "<p>";
-        text += "<ul>";
-        text += "<li>H :   make this help appear</li>";
-        text += "<li>Ctrl + mouse right button double click :   choose background color</li>";
-        text += "</ul>";
-        text += "<ul>";
-        text += "<li>Shift + mouse left: select cage vertices</li>";
-        text += "<li>Shift + Ctrl + mouse left: unselect cage vertices</li>";
-        text += "<li>Shift + mouse right click: manipulate the selected vertices</li>";
-        text += "</ul>";
-        text += "<h3>User guide</h3>";
-        text += "<p>";
-        text += "<b>FIRST</b> open a mesh, <b>THEN</b> open a cage. OBJ and OFF files are supported.";
-        text += "</p>";
-        text += "<p>";
-        text += "When you load a cage, there will be a latence time due to the computation of the cage coordinates.";
-        text += "</p>";
-        text += "<p>";
-        text += "To deform the mesh, use the 'Rectangle' selection tool to select cage vertices, by using the mouse while keeping 'Shift' pressed (discussed before).";
-        text += "To disable the manipulation tool, right click on it.";
-        text += "</p>";
-        return text;
+        QFile file (":/text/help");
+        file.open (QIODevice::ReadOnly);
+        QTextStream stream (&file);
+        return stream.readAll ();
     }
 
     void keyPressEvent( QKeyEvent * event )

@@ -1,0 +1,35 @@
+<h2>QMVC Viewer</h2>
+<p>
+This application is Reference implementation of the research paper:<br>
+  <b>Mean value coordinates for quad cages in 3D</b><br>
+  <i>Jean-Marc Thiery, Pooran Memari and Tamy Boubekeur</i><br>
+  ACM Transactions on Graphics - Proc. SIGGRAPH Asia 2018<br>
+  <a href=\"https://www.telecom-paristech.fr/~boubek/papers/QMVC<br>\" Go to the project page</a><br>
+</p>
+
+<h3>Basics</h3>
+<p>
+<ul>
+<li>H:   make this help appear</li>
+<li>Ctrl + mouse right button double click :   choose background color</li>
+</ul>
+<ul>
+<li>Shift + mouse left: select cage vertices</li>
+<li>Shift + Ctrl + mouse left: unselect cage vertices</li>
+<li>Shift + mouse right click: manipulate the selected vertices</li>
+</ul>
+</p>
+
+<h3>User guide</h3>
+<p>
+<b>FIRST</b> open a mesh, <b>THEN</b> open a cage. OBJ and OFF files are supported.
+</p>
+
+<p>
+When you load a cage, there will be a latence time due to the computation of the cage coordinates.
+</p>
+
+<p>
+To deform the mesh, use the 'Rectangle' selection tool to select cage vertices, by using the mouse while keeping 'Shift' pressed (discussed before).
+To disable the manipulation tool, right click on it.
+</p>

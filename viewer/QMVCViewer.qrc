@@ -1,0 +1,24 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/icons">
+    <file alias="open">resources/icons/open.png</file>
+    <file alias="open-cage">resources/icons/open-cage.png</file>
+    <file alias="open-deformed-cage">resources/icons/open-deformed-cage.png</file>
+    <file alias="save">resources/icons/save.png</file>
+    <file alias="save-cage">resources/icons/save-cage.png</file>
+    <file alias="open-camera">resources/icons/open-camera.png</file>
+    <file alias="save-camera">resources/icons/save-camera.png</file>
+    <file alias="save-snapshot">resources/icons/save-snapshot.png</file>
+    <file alias="help">resources/icons/help.png</file>
+    <file alias="quit">resources/icons/quit.png</file>
+    <file alias="select-rect">resources/icons/quit.png</file>
+    <file alias="select-face">resources/icons/quit.png</file>
+</qresource>
+<qresource prefix="/images"> 
+    <file alias="cm-grid">resources/images/cm_grid.png</file>
+    <file alias="cm-lines">resources/images/cm_lines.png</file>
+</qresource>
+<qresource prefix="/text">
+    <file alias="help">resources/text/help.txt</file>
+</qresource>
+</RCC>
+

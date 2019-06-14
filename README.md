@@ -1,6 +1,6 @@
 # QMVC - Quad Mean Value Coordinates #
 
-![](viewer/images/qmvc-snapshot.png)
+![](viewer/resources/images/qmvc-snapshot.png)
 
 ## Overview ##
 
