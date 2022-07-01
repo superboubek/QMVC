@@ -444,26 +444,34 @@ double compute2DWindingNumberInQuad( point_t const & eta , point_t const & q0 , 
 
 
 
-template< class point_t >
-void computeFloaterBarycentricCoordinatesInPlanarQuad( point_t const & eta , point_t const & q0 , point_t const & q1 , point_t const & q2 , point_t const & q3 , point_t const & nq ,
-                                                double & u , double & v ) {
-    double A0 = point_t::dot(nq , point_t::cross(q0-eta,q1-eta));
-    double A1 = point_t::dot(nq , point_t::cross(q2-eta,q3-eta));
-    double A2 = point_t::dot(nq , point_t::cross(q3-eta,q0-eta));
-    double A3 = point_t::dot(nq , point_t::cross(q0-eta,q1-eta));
-    double B0 = point_t::dot(nq , point_t::cross(q3-eta,q1-eta));
-    double B1 = point_t::dot(nq , point_t::cross(q1-eta,q3-eta));
-    // double B2 = point_t::dot(nq , point_t::cross(q2-eta,q0-eta));
-    double B3 = point_t::dot(nq , point_t::cross(q3-eta,q1-eta));
+template <class point_t>
+void computeFloaterBarycentricCoordinatesInPlanarQuad(
+    point_t const& eta,
+    point_t const& q0,
+    point_t const& q1,
+    point_t const& q2,
+    point_t const& q3,
+    point_t const& nq,
+    double& u,
+    double& v)
+{
+    double A0 = point_t::dot(nq, point_t::cross(q0 - eta, q1 - eta)) / 2;
+    double A1 = point_t::dot(nq, point_t::cross(q1 - eta, q2 - eta)) / 2;
+    double A2 = point_t::dot(nq, point_t::cross(q2 - eta, q3 - eta)) / 2;
+    double A3 = point_t::dot(nq, point_t::cross(q3 - eta, q0 - eta)) / 2;
+    double B0 = point_t::dot(nq, point_t::cross(q3 - eta, q1 - eta)) / 2;
+    double B1 = point_t::dot(nq, point_t::cross(q0 - eta, q2 - eta)) / 2;
+    // double B2 = point_t::dot(nq , point_t::cross(q1-eta,q3-eta)) / 2;
+    double B3 = point_t::dot(nq, point_t::cross(q2 - eta, q0 - eta)) / 2;
 
-    double D = std::max<double>(0.0 , B0*B0 + B1*B1 + 2*A0*A2 + 2*A1*A3);
+    double D = std::max<double>(0.0, B0 * B0 + B1 * B1 + 2 * A0 * A2 + 2 * A1 * A3);
     double D_sqrt = sqrt(D);
 
-    double E0  = 2*A0 - B0 - B1 + D_sqrt;
-    double E3  = 2*A3 - B3 - B0 + D_sqrt;
+    double E0 = 2 * A0 - B0 - B1 + D_sqrt;
+    double E3 = 2 * A3 - B3 - B0 + D_sqrt;
 
-    u = 2*A3 / E3;
-    v = 2*A0 / E0;
+    u = 2 * A3 / E3;
+    v = 2 * A0 / E0;
 }
 
 
