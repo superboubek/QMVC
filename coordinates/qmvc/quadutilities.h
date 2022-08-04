@@ -55,7 +55,7 @@ point_t triMeanVector(point_t const & p , point_t const & p0 , point_t const & p
         assert( ! Ntri[i].isnan() );
     }
 
-    point_t m_tri = -0.5 * ( thetatri[0]*Ntri[0].direction(true) + thetatri[1]*Ntri[1].direction(true) + thetatri[2]*Ntri[2].direction(true) );
+    point_t m_tri = -0.5 * ( thetatri[0]*(Ntri[0].direction(true)) + thetatri[1]*(Ntri[1].direction(true)) + thetatri[2]*(Ntri[2].direction(true)) );
     return m_tri;
 }
 
